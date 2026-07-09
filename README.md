@@ -97,6 +97,8 @@ By placing this inside an explicit `BEGIN ... COMMIT` block, we guarantee that t
 
 *(Note: We use this over `SERIALIZABLE` isolation or optimistic locking via version numbers to minimize application-level retry logic and prevent overarching table deadlocks).*
 
+> **Testing this locally:** See [`queries/concurrency_test.sql`](queries/concurrency_test.sql) for a step-by-step demonstration you can run in two concurrent pgAdmin tabs to watch the lock pause execution in real-time.
+
 ## Database-Level Triggers vs. App-Layer Checks
 In modern architectures, business logic is often placed in the application tier. However, this project pushes specific logic down into the database via `plpgsql` triggers for absolute data integrity:
 1. **`apply_transaction`**: Automatically updates the `accounts.balance` whenever a ledger entry is inserted. This ensures the ledger and current balance can **never** drift out of sync.
